@@ -218,7 +218,7 @@ async function main() {
         console.log("Vainqueur de Triangulaires")
         console.table(arrayToJsonWithOccurrences(circonscriptions.filter(c => c.legislatives["2e"].length > 2).map(c => c.legislatives["2e"][0].name)))
 
-
+        console.log("Assemblée")
         console.table(arrayToJsonWithOccurrences(circonscriptions.map(c => c.legislatives.winner)))
         // Write the result to a JSON file
         const output = {
