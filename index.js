@@ -52,7 +52,7 @@ async function main() {
     const scenarios = await readJSONFile("scenarios.json");
     // Convert the sheet to JSON
     const jsonData = xlsx.utils.sheet_to_json(sheet, { defval: "" });
-
+    const results = {RN : {},LREM : {},"Front Populaire":{}, "undefined": {}}
 
 
     scenarios.scenarios.forEach(s => {
@@ -105,7 +105,6 @@ async function main() {
                 }
             }
             circonscription.legislatives = { "1er": [], "2e": [] }
-    
                 // 1er Tour
                 s.groupement.forEach(groupe => {
                     let voteGroup = 0;
@@ -140,7 +139,7 @@ async function main() {
 
 
                 if(circonscription.legislatives.winner) {
-                    circonscription.legislatives["2e"]= [circonscription.legislatives["1er"][0]]
+                    circonscription.legislatives["2e"] = [circonscription.legislatives["1er"][0]]
                 } else if (circonscription.legislatives["2e"].length == 0 ) {
                     circonscription.legislatives["2e"].push(circonscription.legislatives["1er"][0])
                     circonscription.legislatives["2e"].push(circonscription.legislatives["1er"][1])
@@ -219,17 +218,31 @@ async function main() {
         console.table(arrayToJsonWithOccurrences(circonscriptions.filter(c => c.legislatives["2e"].length > 2).map(c => c.legislatives["2e"][0].name)))
 
         console.log("Assemblée")
-        console.table(arrayToJsonWithOccurrences(circonscriptions.map(c => c.legislatives.winner)))
+        
+        s.result = arrayToJsonWithOccurrences(circonscriptions.map(c => c.legislatives.winner))
+       Object.keys(s.result).forEach(party => {
+            results[party][s.name] = s.result[party]
+        })
+        
+        console.table(arrayToJsonWithOccurrences(circonscriptions.map(c => c.legislatives.results)))
+
+        circonscriptions.forEach(circonscription => delete circonscription.results)
+
+
         // Write the result to a JSON file
         const output = {
-            partiesFiltered,
-            constituencies,
+            circonscriptions,
+            scenario : s,
         };
 
 
-        fs.writeFileSync('constituencies_and_parties_results.json', JSON.stringify(output, null, 2), 'utf8');
+        fs.writeFileSync(`results_${s.name}.json`, JSON.stringify(output, null, 2), 'utf8');
         console.log('Data has been written to constituencies_and_parties_results.json');
     })
+
+
+    fs.writeFileSync('results_total.json', JSON.stringify(scenarios, null, 2), 'utf8');
+    console.table(results)
 }
 
 main()

@@ -1,7 +1,8 @@
 {
     "scenarios": [
+
         {
-            "name": "Logic",
+            "name": "Logique",
             "groupement": [
                 {
                     "name": "Front Populaire",
@@ -30,7 +31,8 @@
                             "name": "Animaliste",
                             "ratio": 1
                         }
-                    ]
+                    ],
+                    "vote": 7894.9
                 },
                 {
                     "name": "LREM",
@@ -47,7 +49,8 @@
                             "name": "LR",
                             "ratio": 0
                         }
-                    ]
+                    ],
+                    "vote": 6447.1
                 },
                 {
                     "name": "RN",
@@ -76,7 +79,8 @@
                             "name": "LR",
                             "ratio": 0
                         }
-                    ]
+                    ],
+                    "vote": 5820
                 },
                 {
                     "name": "LR",
@@ -85,7 +89,8 @@
                             "name": "LR",
                             "ratio": 1
                         }
-                    ]
+                    ],
+                    "vote": 1867
                 }
             ],
             "LREM vs Front Populaire": [
@@ -140,7 +145,7 @@
                     ]
                 }
             ],
-            "RN vs LREM" : [
+            "RN vs LREM": [
                 {
                     "name": "LREM",
                     "regroupement": [
@@ -238,11 +243,11 @@
                         },
                         {
                             "name": "LREM",
-                            "ratio": 0.8
+                            "ratio": 0.5
                         },
                         {
                             "name": "LR",
-                            "ratio": 0.2
+                            "ratio": 0.1
                         }
                     ]
                 },
@@ -272,6 +277,10 @@
                         {
                             "name": "LR",
                             "ratio": 0.8
+                        },
+                        {
+                            "name": "LREM",
+                            "ratio": 0.1
                         }
                     ]
                 }
@@ -352,7 +361,13 @@
                         }
                     ]
                 }
-            ]
+            ],
+            "result": {
+                "RN": 331,
+                "Front Populaire": 230,
+                "LREM": 14,
+                "undefined": 2
+            }
         },
         {
             "name": "Full Front Populaire",
@@ -384,7 +399,8 @@
                             "name": "Animaliste",
                             "ratio": 1
                         }
-                    ]
+                    ],
+                    "vote": 9010
                 },
                 {
                     "name": "LREM",
@@ -401,7 +417,8 @@
                             "name": "LR",
                             "ratio": 0
                         }
-                    ]
+                    ],
+                    "vote": 5332
                 },
                 {
                     "name": "RN",
@@ -430,7 +447,8 @@
                             "name": "LR",
                             "ratio": 0
                         }
-                    ]
+                    ],
+                    "vote": 5820
                 },
                 {
                     "name": "LR",
@@ -439,7 +457,8 @@
                             "name": "LR",
                             "ratio": 1
                         }
-                    ]
+                    ],
+                    "vote": 1867
                 }
             ],
             "LREM vs Front Populaire": [
@@ -494,7 +513,7 @@
                     ]
                 }
             ],
-            "RN vs LREM" : [
+            "RN vs LREM": [
                 {
                     "name": "LREM",
                     "regroupement": [
@@ -592,11 +611,11 @@
                         },
                         {
                             "name": "LREM",
-                            "ratio": 0.2
+                            "ratio": 0.9
                         },
                         {
                             "name": "LR",
-                            "ratio": 0
+                            "ratio": 0.1
                         }
                     ]
                 },
@@ -706,7 +725,381 @@
                         }
                     ]
                 }
-            ]
+            ],
+            "result": {
+                "RN": 371,
+                "Front Populaire": 194,
+                "LREM": 10,
+                "undefined": 2
+            }
+        },
+        {
+            "name": "Front Populaire Mal Aimée",
+            "groupement": [
+                {
+                    "name": "Front Populaire",
+                    "regroupement": [
+                        {
+                            "name": "PS",
+                            "ratio": 0.3
+                        },
+                        {
+                            "name": "LFI",
+                            "ratio": 1
+                        },
+                        {
+                            "name": "EELV",
+                            "ratio": 1
+                        },
+                        {
+                            "name": "PCF",
+                            "ratio": 1
+                        },
+                        {
+                            "name": "ÉCOLOGIE AU CENTRE",
+                            "ratio": 1
+                        },
+                        {
+                            "name": "Animaliste",
+                            "ratio": 1
+                        }
+                    ],
+                    "vote": 7894.9
+                },
+                {
+                    "name": "LREM",
+                    "regroupement": [
+                        {
+                            "name": "LREM",
+                            "ratio": 1
+                        },
+                        {
+                            "name": "PS",
+                            "ratio": 0.7
+                        },
+                        {
+                            "name": "LR",
+                            "ratio": 0
+                        }
+                    ],
+                    "vote": 6447.1
+                },
+                {
+                    "name": "RN",
+                    "regroupement": [
+                        {
+                            "name": "RN",
+                            "ratio": 1
+                        },
+                        {
+                            "name": "Reconquête",
+                            "ratio": 1
+                        },
+                        {
+                            "name": "Patriote",
+                            "ratio": 1
+                        },
+                        {
+                            "name": "Asselinau",
+                            "ratio": 1
+                        },
+                        {
+                            "name": "Lassale",
+                            "ratio": 1
+                        },
+                        {
+                            "name": "LR",
+                            "ratio": 0.2
+                        }
+                    ],
+                    "vote": 5820
+                },
+                {
+                    "name": "LR",
+                    "regroupement": [
+                        {
+                            "name": "LR",
+                            "ratio": 0.8
+                        }
+                    ],
+                    "vote": 1867
+                }
+            ],
+            "LREM vs Front Populaire": [
+                {
+                    "name": "Front Populaire",
+                    "regroupement": [
+                        {
+                            "name": "PS",
+                            "ratio": 0.3
+                        },
+                        {
+                            "name": "LFI",
+                            "ratio": 1
+                        },
+                        {
+                            "name": "EELV",
+                            "ratio": 1
+                        },
+                        {
+                            "name": "PCF",
+                            "ratio": 1
+                        },
+                        {
+                            "name": "ÉCOLOGIE AU CENTRE",
+                            "ratio": 1
+                        },
+                        {
+                            "name": "Animaliste",
+                            "ratio": 1
+                        }
+                    ]
+                },
+                {
+                    "name": "LREM",
+                    "regroupement": [
+                        {
+                            "name": "LREM",
+                            "ratio": 1
+                        },
+                        {
+                            "name": "PS",
+                            "ratio": 0.7
+                        },
+                        {
+                            "name": "LR",
+                            "ratio": 0.5
+                        },
+                        {
+                            "name": "RN",
+                            "ratio": 0.1
+                        }
+                    ]
+                }
+            ],
+            "RN vs LREM": [
+                {
+                    "name": "LREM",
+                    "regroupement": [
+                        {
+                            "name": "LREM",
+                            "ratio": 1
+                        },
+                        {
+                            "name": "PS",
+                            "ratio": 1
+                        },
+                        {
+                            "name": "LFI",
+                            "ratio": 0.9
+                        },
+                        {
+                            "name": "EELV",
+                            "ratio": 0.9
+                        },
+                        {
+                            "name": "PCF",
+                            "ratio": 1
+                        },
+                        {
+                            "name": "ÉCOLOGIE AU CENTRE",
+                            "ratio": 1
+                        },
+                        {
+                            "name": "Animaliste",
+                            "ratio": 1
+                        },
+                        {
+                            "name": "LR",
+                            "ratio": 0.2
+                        }
+                    ]
+                },
+                {
+                    "name": "RN",
+                    "regroupement": [
+                        {
+                            "name": "RN",
+                            "ratio": 1
+                        },
+                        {
+                            "name": "Reconquête",
+                            "ratio": 1
+                        },
+                        {
+                            "name": "Patriote",
+                            "ratio": 1
+                        },
+                        {
+                            "name": "Asselinau",
+                            "ratio": 1
+                        },
+                        {
+                            "name": "Lassale",
+                            "ratio": 1
+                        },
+                        {
+                            "name": "LR",
+                            "ratio": 0.8
+                        }
+                    ]
+                }
+            ],
+            "RN vs Front Populaire": [
+                {
+                    "name": "Front Populaire",
+                    "regroupement": [
+                        {
+                            "name": "PS",
+                            "ratio": 1
+                        },
+                        {
+                            "name": "LFI",
+                            "ratio": 1
+                        },
+                        {
+                            "name": "EELV",
+                            "ratio": 1
+                        },
+                        {
+                            "name": "PCF",
+                            "ratio": 1
+                        },
+                        {
+                            "name": "ÉCOLOGIE AU CENTRE",
+                            "ratio": 1
+                        },
+                        {
+                            "name": "Animaliste",
+                            "ratio": 1
+                        },
+                        {
+                            "name": "LREM",
+                            "ratio": 0.2
+                        },
+                        {
+                            "name": "LR",
+                            "ratio": 0.1
+                        }
+                    ]
+                },
+                {
+                    "name": "RN",
+                    "regroupement": [
+                        {
+                            "name": "RN",
+                            "ratio": 1
+                        },
+                        {
+                            "name": "Reconquête",
+                            "ratio": 1
+                        },
+                        {
+                            "name": "Patriote",
+                            "ratio": 1
+                        },
+                        {
+                            "name": "Asselinau",
+                            "ratio": 1
+                        },
+                        {
+                            "name": "Lassale",
+                            "ratio": 1
+                        },
+                        {
+                            "name": "LR",
+                            "ratio": 0.8
+                        },
+                        {
+                            "name": "LREM",
+                            "ratio": 0.3
+                        }
+                    ]
+                }
+            ],
+            "RN vs LREM vs Front Populaire": [
+                {
+                    "name": "Front Populaire",
+                    "regroupement": [
+                        {
+                            "name": "PS",
+                            "ratio": 0.3
+                        },
+                        {
+                            "name": "LFI",
+                            "ratio": 1
+                        },
+                        {
+                            "name": "EELV",
+                            "ratio": 1
+                        },
+                        {
+                            "name": "PCF",
+                            "ratio": 1
+                        },
+                        {
+                            "name": "ÉCOLOGIE AU CENTRE",
+                            "ratio": 1
+                        },
+                        {
+                            "name": "Animaliste",
+                            "ratio": 1
+                        }
+                    ]
+                },
+                {
+                    "name": "LREM",
+                    "regroupement": [
+                        {
+                            "name": "LREM",
+                            "ratio": 1
+                        },
+                        {
+                            "name": "PS",
+                            "ratio": 0.7
+                        },
+                        {
+                            "name": "LR",
+                            "ratio": 0.25
+                        }
+                    ]
+                },
+                {
+                    "name": "RN",
+                    "regroupement": [
+                        {
+                            "name": "RN",
+                            "ratio": 1
+                        },
+                        {
+                            "name": "Reconquête",
+                            "ratio": 1
+                        },
+                        {
+                            "name": "Patriote",
+                            "ratio": 1
+                        },
+                        {
+                            "name": "Asselinau",
+                            "ratio": 1
+                        },
+                        {
+                            "name": "Lassale",
+                            "ratio": 1
+                        },
+                        {
+                            "name": "LR",
+                            "ratio": 0.75
+                        }
+                    ]
+                }
+            ],
+            "result": {
+                "RN": 331,
+                "Front Populaire": 230,
+                "LREM": 14,
+                "undefined": 2
+            }
         }
     ]
 }
