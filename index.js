@@ -8,6 +8,8 @@ const workbook = xlsx.readFile(filePath);
 const sheetName = workbook.SheetNames[0];
 const sheet = workbook.Sheets[sheetName];
 
+
+const splitter = "--------------------"
 // Fonction pour lire le fichier JSON
 function readJSONFile(filePath) {
     return new Promise((resolve, reject) => {
@@ -37,7 +39,7 @@ async function main() {
 
 
         array.forEach(item => {
-    
+
             if (occurrences[item]) {
                 occurrences[item]++;
             } else {
@@ -52,7 +54,9 @@ async function main() {
     const scenarios = await readJSONFile("scenarios.json");
     // Convert the sheet to JSON
     const jsonData = xlsx.utils.sheet_to_json(sheet, { defval: "" });
-    const results = {RN : {},LREM : {},"Front Populaire":{}, "undefined": {}}
+    const results = {
+        "Report 1er Tour": {}, "PS => NFP": {}, "Report 2e Tour": {}, "LR => RN": {}, "LREM => NFP": {}, "LR => NFP": {}, Résultats : {},RN: {}, LREM: {}, "Front Populaire": {}, "undefined": {}
+    }
 
 
     scenarios.scenarios.forEach(s => {
@@ -60,7 +64,7 @@ async function main() {
         console.log("------------------------------------------------")
         let constituencies = {};
         let parties = []
-        let duels= []
+        let duels = []
         let tri = []
         let totalVote = 0;
         let circonscriptions = [];
@@ -76,6 +80,20 @@ async function main() {
                 label: label,
                 results: []
             };
+
+            results["Report 1er Tour"][s.name] ??= splitter
+            results["PS => NFP"][s.name] = s.groupement.find(g => g.name === "Front Populaire").regroupement.find(r => r.name === "PS").ratio * 100 + "%"
+            results["Report 2e Tour"][s.name] ??= splitter
+            results["LREM => NFP"][s.name] = s["RN vs Front Populaire"].find(g => g.name === "Front Populaire").regroupement.find(r => r.name === "LREM").ratio * 100 + "%"
+            results["LR => NFP"][s.name] = s["RN vs Front Populaire"].find(g => g.name === "Front Populaire").regroupement.find(r => r.name === "LR").ratio * 100 + "%"
+            results["LR => RN"][s.name] = s["RN vs Front Populaire"].find(g => g.name === "RN").regroupement.find(r => r.name === "LR").ratio * 100 + "%"
+            results["Report 2e Tour"][s.name] ??= splitter
+
+
+
+
+
+
 
 
             for (let i = 1; i <= 38; i++) {  // Assuming there are 38 possible parties
@@ -105,90 +123,90 @@ async function main() {
                 }
             }
             circonscription.legislatives = { "1er": [], "2e": [] }
-                // 1er Tour
-                s.groupement.forEach(groupe => {
-                    let voteGroup = 0;
-                    groupe.regroupement.forEach(r => {
-                        voteGroup += circonscription.results.find(res => res.party_name === r.name).votes * r.ratio
-                    })
-                    groupe.vote = voteGroup
+            // 1er Tour
+            s.groupement.forEach(groupe => {
+                let voteGroup = 0;
+                groupe.regroupement.forEach(r => {
+                    voteGroup += circonscription.results.find(res => res.party_name === r.name).votes * r.ratio
+                })
+                groupe.vote = voteGroup
 
-                    circonscription.legislatives["1er"].push({
+                circonscription.legislatives["1er"].push({
+                    name: groupe.name,
+                    vote: groupe.vote,
+                    "vote%": Math.round(voteGroup / row["Exprimés"] * 100, 1),
+                    "vote%inscrits": Math.round(voteGroup / row["Inscrits"] * 100, 1)
+                })
+
+                // Victoire 1er tour
+                if (voteGroup > row["Exprimés"] / 2) {
+                    //console.log(`Winner : ${groupe.name} in ${circonscription.label}`)
+                    circonscription.legislatives.winner = groupe.name
+                }
+                // Present 2e tour
+                if (voteGroup > row["Inscrits"] * 12.5 / 100) {
+                    circonscription.legislatives["2e"].push({
                         name: groupe.name,
                         vote: groupe.vote,
                         "vote%": Math.round(voteGroup / row["Exprimés"] * 100, 1),
                         "vote%inscrits": Math.round(voteGroup / row["Inscrits"] * 100, 1)
                     })
-
-                    // Victoire 1er tour
-                    if (voteGroup > row["Exprimés"] / 2) {
-                        //console.log(`Winner : ${groupe.name} in ${circonscription.label}`)
-                        circonscription.legislatives.winner = groupe.name
-                    }
-                    // Present 2e tour
-                    if (voteGroup > row["Inscrits"] * 12.5 / 100) {
-                        circonscription.legislatives["2e"].push({
-                            name: groupe.name,
-                            vote: groupe.vote,
-                            "vote%": Math.round(voteGroup / row["Exprimés"] * 100, 1),
-                            "vote%inscrits": Math.round(voteGroup / row["Inscrits"] * 100, 1)
-                        })
-                    }
-                })
-                circonscription.legislatives["1er"].sort((a, b) => b.vote - a.vote)
-
-
-                if(circonscription.legislatives.winner) {
-                    circonscription.legislatives["2e"] = [circonscription.legislatives["1er"][0]]
-                } else if (circonscription.legislatives["2e"].length == 0 ) {
-                    circonscription.legislatives["2e"].push(circonscription.legislatives["1er"][0])
-                    circonscription.legislatives["2e"].push(circonscription.legislatives["1er"][1])
-                } else if (circonscription.legislatives["2e"].length == 1) {
-                    circonscription.legislatives["2e"].push(circonscription.legislatives["1er"][1])
                 }
+            })
+            circonscription.legislatives["1er"].sort((a, b) => b.vote - a.vote)
+
+
+            if (circonscription.legislatives.winner) {
+                circonscription.legislatives["2e"] = [circonscription.legislatives["1er"][0]]
+            } else if (circonscription.legislatives["2e"].length == 0) {
+                circonscription.legislatives["2e"].push(circonscription.legislatives["1er"][0])
+                circonscription.legislatives["2e"].push(circonscription.legislatives["1er"][1])
+            } else if (circonscription.legislatives["2e"].length == 1) {
+                circonscription.legislatives["2e"].push(circonscription.legislatives["1er"][1])
+            }
+
+            circonscription.legislatives["2e"].sort((a, b) => b.vote - a.vote)
+            if (circonscription.legislatives["2e"].length > 2) tri.push(circonscription.legislatives["2e"][0])
+            circonscription.legislatives["2e"].sort((a, b) => b.name.localeCompare(a.name))
+
+            let duel = circonscription.legislatives["2e"].map(p => p.name).join(" vs ")
+            duels.push(duel)
+
+
+            // 2e tour
+            if (s[duel]) {
+                let totalVote = 0;
+                circonscription.legislatives["2e"] = []
+                s[duel].forEach(groupe => {
+                    let voteGroup = 0;
+                    groupe.regroupement.forEach(r => {
+                        voteGroup += circonscription.results.find(res => res.party_name === r.name).votes * r.ratio
+                    })
+                    totalVote += voteGroup
+                })
+
+                s[duel].forEach(groupe => {
+                    let voteGroup = 0;
+                    groupe.regroupement.forEach(r => {
+                        voteGroup += circonscription.results.find(res => res.party_name === r.name).votes * r.ratio
+                    })
+                    circonscription.legislatives["2e"].push({
+                        name: groupe.name,
+                        vote: voteGroup,
+                        "vote%": Math.round(voteGroup / totalVote * 100, 1),
+                    })
+                })
+
 
                 circonscription.legislatives["2e"].sort((a, b) => b.vote - a.vote)
-                if(circonscription.legislatives["2e"].length > 2) tri.push(circonscription.legislatives["2e"][0])
-                circonscription.legislatives["2e"].sort((a, b) => b.name.localeCompare(a.name))
-            
-                let duel = circonscription.legislatives["2e"].map(p => p.name).join(" vs ")
-                duels.push(duel)
-
-
-                // 2e tour
-                if(s[duel]) {
-                    let totalVote = 0;
-                    circonscription.legislatives["2e"] = []
-                    s[duel].forEach(groupe => {
-                        let voteGroup = 0;
-                        groupe.regroupement.forEach(r => {
-                            voteGroup += circonscription.results.find(res => res.party_name === r.name).votes * r.ratio
-                        })
-                        totalVote += voteGroup
-                    })
-
-                    s[duel].forEach(groupe => {
-                        let voteGroup = 0;
-                        groupe.regroupement.forEach(r => {
-                            voteGroup += circonscription.results.find(res => res.party_name === r.name).votes * r.ratio
-                        })
-                        circonscription.legislatives["2e"].push({
-                            name: groupe.name,
-                            vote: voteGroup,
-                            "vote%": Math.round(voteGroup / totalVote * 100, 1),
-                        })
-                    })
-
-
-                    circonscription.legislatives["2e"].sort((a, b) => b.vote - a.vote)
-                    circonscription.legislatives.winner = circonscription.legislatives["2e"][0].name
+                circonscription.legislatives.winner = circonscription.legislatives["2e"][0].name
 
 
 
-                } else if(circonscription.legislatives["2e"].length > 1){
-                    console.log(duel)
+            } else if (circonscription.legislatives["2e"].length > 1) {
+                console.log(duel)
 
-                }
+            }
 
             circonscriptions.push(circonscription)
             constituencies[constituencyCode] = circonscription;
@@ -215,15 +233,31 @@ async function main() {
         console.log("Resultats 2e tour")
 
         console.log("Vainqueur de Triangulaires")
-        console.table(arrayToJsonWithOccurrences(circonscriptions.filter(c => c.legislatives["2e"].length > 2).map(c => c.legislatives["2e"][0].name)))
+        let triangulaires = arrayToJsonWithOccurrences(circonscriptions.filter(c => c.legislatives["2e"].length > 2).map(c => c.legislatives["2e"][0].name))
+        console.table(triangulaires)
+
+
 
         console.log("Assemblée")
-        
         s.result = arrayToJsonWithOccurrences(circonscriptions.map(c => c.legislatives.winner))
-       Object.keys(s.result).forEach(party => {
+
+
+        Object.keys(s.result).forEach(party => {
             results[party][s.name] = s.result[party]
+
         })
-        
+        results[splitter] ??= {}
+        results[splitter][s.name] = splitter
+        results.Triangulaires ??= {}
+        results.Triangulaires[s.name] = splitter
+
+        Object.keys(s.result).forEach(party => {
+            results[party + " "] ??= {}
+            if (triangulaires[party]) results[party + " "][s.name] = triangulaires[party]
+        })
+
+
+
         console.table(arrayToJsonWithOccurrences(circonscriptions.map(c => c.legislatives.results)))
 
         circonscriptions.forEach(circonscription => delete circonscription.results)
@@ -232,7 +266,7 @@ async function main() {
         // Write the result to a JSON file
         const output = {
             circonscriptions,
-            scenario : s,
+            scenario: s,
         };
 
 
